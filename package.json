@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch",
+    "test": "node scripts/run-jest.mjs",
+    "test:coverage": "node scripts/run-jest.mjs --coverage",
+    "test:watch": "node scripts/run-jest.mjs --watch",
     "docker:build": "docker build -t adoption-api:1.0.0 .",
     "docker:run": "docker run -d -p 3000:3000 --name adoption-api adoption-api:1.0.0"
   },

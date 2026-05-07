@@ -1,6 +1,6 @@
 node_modules
 /test
 .env
-Readme.md
+guia.md
 templates.md
 plan.md
