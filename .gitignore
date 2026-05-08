@@ -1,6 +1,7 @@
 node_modules
 /test
 .env
+/coverage
 guia.md
 templates.md
 plan.md
