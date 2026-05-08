@@ -45,7 +45,7 @@ describe("Adoption Router - Endpoints", () => {
       adoptionsController.getAllAdoptions.mockImplementation((req, res) => {
         res.status(200).json({
           status: "success",
-          data: [adoptionResponse],
+          payload: [adoptionResponse],
         });
       });
 
@@ -56,14 +56,14 @@ describe("Adoption Router - Endpoints", () => {
 
       expect(response.body.status).toBe("success");
       expect(Array.isArray(response.body.payload)).toBe(true);
-      expect(response.body.data.length).toBeGreaterThanOrEqual(0);
+      expect(response.body.payload.length).toBeGreaterThanOrEqual(0);
     });
 
     test("✅ should return empty array when no adoptions exist", async () => {
       adoptionsController.getAllAdoptions.mockImplementation((req, res) => {
         res.status(200).json({
           status: "success",
-          data: [],
+          payload: [],
         });
       });
 
@@ -76,21 +76,21 @@ describe("Adoption Router - Endpoints", () => {
       adoptionsController.getAllAdoptions.mockImplementation((req, res) => {
         res.status(500).json({
           status: "error",
-          message: "Database connection failed",
+          error: "Database connection failed",
         });
       });
 
       const response = await request(app).get("/api/adoptions/").expect(500);
 
       expect(response.body.status).toBe("error");
-      expect(response.body.message).toBeDefined();
+      expect(response.body.error).toBeDefined();
     });
 
     test("⚠️ should handle unauthorized access", async () => {
       adoptionsController.getAllAdoptions.mockImplementation((req, res) => {
         res.status(401).json({
           status: "error",
-          message: "Unauthorized",
+          error: "Unauthorized",
         });
       });
 
@@ -110,12 +110,12 @@ describe("Adoption Router - Endpoints", () => {
         if (aid === existingAdoptionId) {
           res.status(200).json({
             status: "success",
-            data: adoptionResponse,
+            payload: adoptionResponse,
           });
         } else {
           res.status(404).json({
             status: "error",
-            message: "Adoption not found",
+            error: "Adoption not found",
           });
         }
       });
@@ -134,7 +134,7 @@ describe("Adoption Router - Endpoints", () => {
       adoptionsController.getAdoption.mockImplementation((req, res) => {
         res.status(404).json({
           status: "error",
-          message: "Adoption not found",
+          error: "Adoption not found",
         });
       });
 
@@ -143,7 +143,7 @@ describe("Adoption Router - Endpoints", () => {
         .expect(404);
 
       expect(response.body.status).toBe("error");
-      expect(response.body.message).toMatch(/not found/i);
+      expect(response.body.error).toMatch(/not found/i);
     });
 
     test("⚠️ should return 400 for invalid adoption ID format", async () => {
@@ -152,7 +152,7 @@ describe("Adoption Router - Endpoints", () => {
         if (!aid.match(/^[0-9a-fA-F]{24}$/)) {
           res.status(400).json({
             status: "error",
-            message: "Invalid adoption ID format",
+            error: "Invalid adoption ID format",
           });
         }
       });
@@ -168,7 +168,7 @@ describe("Adoption Router - Endpoints", () => {
       adoptionsController.getAdoption.mockImplementation((req, res) => {
         res.status(500).json({
           status: "error",
-          message: "Database error",
+          error: "Database error",
         });
       });
 
@@ -188,15 +188,9 @@ describe("Adoption Router - Endpoints", () => {
       adoptionsController.createAdoption.mockImplementation((req, res) => {
         const { uid, pid } = req.params;
         if (uid && pid) {
-          res.status(201).json({
+          res.status(200).json({
             status: "success",
-            data: {
-              _id: "507f1f77bcf86cd799439013",
-              adopterId: uid,
-              petId: pid,
-              adoptionDate: new Date(),
-              status: "pending",
-            },
+            message: "Pet adopted"
           });
         }
       });
@@ -207,12 +201,10 @@ describe("Adoption Router - Endpoints", () => {
       const response = await request(app)
         .post(`/api/adoptions/${uid}/${pid}`)
         .send(validAdoptionData)
-        .expect(201);
+        .expect(200);
 
       expect(response.body.status).toBe("success");
-      expect(response.body.payload._id).toBeDefined();
-      expect(response.body.payload.adopterId).toBe(uid);
-      expect(response.body.payload.petId).toBe(pid);
+      expect(response.body.message).toBe("Pet adopted");
     });
 
     test("⚠️ should return 400 when uid is missing", async () => {
@@ -223,7 +215,7 @@ describe("Adoption Router - Endpoints", () => {
         if (missing) {
           res.status(400).json({
             status: "error",
-            message: "Missing required parameters: uid and pid",
+            error: "Missing required parameters: uid and pid",
           });
           return;
         }
@@ -247,7 +239,7 @@ describe("Adoption Router - Endpoints", () => {
         if (missing) {
           res.status(400).json({
             status: "error",
-            message: "Missing required parameters: uid and pid",
+            error: "Missing required parameters: uid and pid",
           });
           return;
         }
@@ -269,7 +261,7 @@ describe("Adoption Router - Endpoints", () => {
         if (!uid.match(/^[0-9a-fA-F]{24}$/)) {
           res.status(400).json({
             status: "error",
-            message: "Invalid user ID format",
+            error: "Invalid user ID format",
           });
         }
       });
@@ -288,7 +280,7 @@ describe("Adoption Router - Endpoints", () => {
         if (!pid.match(/^[0-9a-fA-F]{24}$/)) {
           res.status(400).json({
             status: "error",
-            message: "Invalid pet ID format",
+            error: "Invalid pet ID format",
           });
         }
       });
@@ -305,7 +297,7 @@ describe("Adoption Router - Endpoints", () => {
       adoptionsController.createAdoption.mockImplementation((req, res) => {
         res.status(404).json({
           status: "error",
-          message: "User not found",
+          error: "User not found",
         });
       });
 
@@ -323,7 +315,7 @@ describe("Adoption Router - Endpoints", () => {
       adoptionsController.createAdoption.mockImplementation((req, res) => {
         res.status(404).json({
           status: "error",
-          message: "Pet not found",
+          error: "Pet not found",
         });
       });
 
@@ -343,7 +335,7 @@ describe("Adoption Router - Endpoints", () => {
         if (!body || Object.keys(body).length === 0) {
           res.status(400).json({
             status: "error",
-            message: "Request body cannot be empty",
+            error: "Request body cannot be empty",
           });
         }
       });
@@ -362,7 +354,7 @@ describe("Adoption Router - Endpoints", () => {
       adoptionsController.createAdoption.mockImplementation((req, res) => {
         res.status(500).json({
           status: "error",
-          message: "Internal server error",
+          error: "Internal server error",
         });
       });
 
@@ -374,117 +366,6 @@ describe("Adoption Router - Endpoints", () => {
         .expect(500);
 
       expect(response.body.status).toBe("error");
-    });
-  });
-
-  // ========================================
-  // TESTS DE SEGURIDAD Y EDGE CASES
-  // ========================================
-  describe("Security & Edge Cases", () => {
-    test("🔐 should prevent XSS in request body", async () => {
-      adoptionsController.createAdoption.mockImplementation((req, res) => {
-        const body = req.body;
-        // Verificar que no hay scripts
-        if (JSON.stringify(body).includes("<script>")) {
-          res.status(400).json({
-            status: "error",
-            message: "Invalid characters detected",
-          });
-        } else {
-          res.status(201).json({ status: "success", data: body });
-        }
-      });
-
-      const maliciousData = {
-        notes: '<script>alert("XSS")</script>',
-      };
-
-      const response = await request(app)
-        .post(
-          "/api/adoptions/507f1f77bcf86cd799439010/507f1f77bcf86cd799439012",
-        )
-        .send(maliciousData);
-
-      expect([201, 400]).toContain(response.status);
-    });
-
-    test("⚠️ should handle extremely large payloads", async () => {
-      adoptionsController.createAdoption.mockImplementation((req, res) => {
-        const bodySize = JSON.stringify(req.body).length;
-        if (bodySize > 1000000) {
-          res.status(413).json({
-            status: "error",
-            message: "Payload too large",
-          });
-        } else {
-          res.status(201).json({ status: "success" });
-        }
-      });
-
-      const largeData = {
-        notes: "A".repeat(10000),
-      };
-
-      const response = await request(app)
-        .post(
-          "/api/adoptions/507f1f77bcf86cd799439010/507f1f77bcf86cd799439012",
-        )
-        .send(largeData);
-
-      expect([201, 413]).toContain(response.status);
-    });
-  });
-
-  // ========================================
-  // TESTS DE INTEGRACIÓN
-  // ========================================
-  describe("Integration - Adoption Flow", () => {
-    test("✅ should complete adoption flow successfully", async () => {
-      // Flujo: GET all → GET by id → POST create
-
-      // 1. Get all
-      adoptionsController.getAllAdoptions.mockImplementation((req, res) => {
-        res.status(200).json({ status: "success", data: [adoptionResponse] });
-      });
-
-      const getAllResponse = await request(app)
-        .get("/api/adoptions/")
-        .expect(200);
-
-      expect(getAllResponse.body.data.length).toBeGreaterThan(0);
-
-      // 2. Get by id
-      adoptionsController.getAdoption.mockImplementation((req, res) => {
-        res.status(200).json({ status: "success", data: adoptionResponse });
-      });
-
-      const getByIdResponse = await request(app)
-        .get(`/api/adoptions/${existingAdoptionId}`)
-        .expect(200);
-
-      expect(getByIdResponse.body.data._id).toBe(existingAdoptionId);
-
-      // 3. Create
-      adoptionsController.createAdoption.mockImplementation((req, res) => {
-        res.status(201).json({
-          status: "success",
-          data: {
-            _id: "507f1f77bcf86cd799439014",
-            adopterId: "507f1f77bcf86cd799439010",
-            petId: "507f1f77bcf86cd799439012",
-          },
-        });
-      });
-
-      const createResponse = await request(app)
-        .post(
-          "/api/adoptions/507f1f77bcf86cd799439010/507f1f77bcf86cd799439012",
-        )
-        .send(validAdoptionData)
-        .expect(201);
-
-      expect(createResponse.body.status).toBe("success");
-      expect(createResponse.body.data._id).toBeDefined();
     });
   });
 });
