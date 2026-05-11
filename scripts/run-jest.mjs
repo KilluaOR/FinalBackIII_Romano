@@ -6,8 +6,6 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const jestPath = path.join(root, "node_modules", "jest", "bin", "jest.js");
 
 let argv = process.argv.slice(2);
-// pnpm run test -- --coverage passes a literal "--" before flags; Jest then treats
-// the next token as a test path pattern instead of an option.
 if (argv[0] === "--" && argv.length > 1 && argv[1].startsWith("-")) {
   argv = argv.slice(1);
 }

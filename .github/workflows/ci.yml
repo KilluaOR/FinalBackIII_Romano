@@ -19,14 +19,11 @@ jobs:
       with:
         node-version: '22'
 
-    - name: Install pnpm
-      run: npm install -g pnpm
-
     - name: Install dependencies
-      run: pnpm install
+      run: npm install
 
     - name: Run Functional Tests
-      run: pnpm test
+      run: npm run test
 
     - name: Build Docker Image (Dry Run)
       run: docker build -t adoption-api:test .
