@@ -14,7 +14,7 @@ if (argv[0] === "--" && argv.length > 1 && argv[1].startsWith("-")) {
 
 const result = spawnSync(
   process.execPath,
-  ["--experimental-vm-modules", jestPath, ...argv],
+  ["--experimental-vm-modules", jestPath, "--forceExit", ...argv],
   { stdio: "inherit", cwd: root }
 );
 
