@@ -5,7 +5,7 @@ API RESTful para la gestión de adopciones de mascotas, construida con Node.js, 
 ## 🚀 Enlaces Importantes
 
 - **💻 Repositorio GitHub:** [https://github.com/KilluaOR/FinalBackIII_Romano](https://github.com/KilluaOR/FinalBackIII_Romano)
-- **🐳 DockerHub Image:** [https://hub.docker.com/repository/docker/killuaor/adoption-api/tags](https://hub.docker.com/repository/docker/killuaor/adoption-api/tags)
+- **🐳 DockerHub Image:** [(https://hub.docker.com/r/killuaor/adoption-api)](https://hub.docker.com/r/killuaor/adoption-api)
 - **📖 Documentación Swagger:** Ejecuta el proyecto y entra a `http://localhost:3000/api-docs`
 ---
 
