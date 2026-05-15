@@ -4,9 +4,9 @@ API RESTful para la gestión de adopciones de mascotas, construida con Node.js, 
 
 ## 🚀 Enlaces Importantes
 
+- **💻 Repositorio GitHub:** [https://github.com/KilluaOR/FinalBackIII_Romano](https://github.com/KilluaOR/FinalBackIII_Romano)
 - **🐳 DockerHub Image:** [https://hub.docker.com/repository/docker/killuaor/adoption-api/tags](https://hub.docker.com/repository/docker/killuaor/adoption-api/tags)
 - **📖 Documentación Swagger:** Ejecuta el proyecto y entra a `http://localhost:3000/api-docs`
-
 ---
 
 ## 🛠️ Tecnologías Utilizadas
@@ -36,8 +36,8 @@ docker run -d -p 3000:3000 -e DATABASE="mongodb://host.docker.internal:27017/ado
 Si desea ejecutar la aplicación en su entorno local de desarrollo sin Docker, utilice el gestor de paquetes estándar de Node (npm):
 ```bash
 # 1. Clonar el repositorio e instalar todas las dependencias del proyecto
-git clone [https://github.com/killuaor/adoption-api.git](https://github.com/killuaor/adoption-api.git)
-cd adoption-api
+git clone https://github.com/KilluaOR/FinalBackIII_Romano.git
+cd FinalBackIII_Romano
 npm install
 
 # 2. Configurar el entorno (Crear un archivo .env en la raíz con sus credenciales de Mongo)
